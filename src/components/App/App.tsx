@@ -1,11 +1,6 @@
 import css from "./App.module.css";
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { deleteNote, fetchNotes, postNote } from "../../services/noteService";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { fetchNotes } from "../../services/noteService";
 import { useState } from "react";
 import NoteList from "../NoteList/NoteList";
 import Pagination from "../Pagination/Pagination";
@@ -13,13 +8,10 @@ import Modal from "../Modal/Modal";
 import NoteForm from "../NoteForm/NoteForm";
 import SearchBox from "../SearchBox/SearchBox";
 import { useDebouncedCallback } from "use-debounce";
-import type { CreateNote } from "../../types/note";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 function App() {
-  const queryClient = useQueryClient();
-
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [isModal, setIsModal] = useState<boolean>(false);
@@ -30,30 +22,6 @@ function App() {
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });
-
-  const addMutation = useMutation({
-    mutationFn: postNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-      setPage(1);
-    },
-  });
-
-  const handleSubmit = (note: CreateNote): void => {
-    addMutation.mutate(note);
-  };
-
-  const deleteMutation = useMutation({
-    mutationFn: deleteNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-      setPage(1);
-    },
-  });
-
-  const handleDelete = (id: string): void => {
-    deleteMutation.mutate(id);
-  };
 
   const handleClick = (): void => {
     setIsModal(true);
@@ -84,24 +52,13 @@ function App() {
             </button>
           }
         </header>
-        {(isLoading || addMutation.isPending || deleteMutation.isPending) && (
-          <Loader></Loader>
-        )}
-        {(isError || addMutation.isError || deleteMutation.isError) && (
-          <ErrorMessage></ErrorMessage>
-        )}
+        {isLoading && <Loader></Loader>}
+        {isError && <ErrorMessage></ErrorMessage>}
         {data && data.notes.length > 0 && (
-          <NoteList onDelete={handleDelete} notes={data.notes}></NoteList>
+          <NoteList notes={data.notes}></NoteList>
         )}
         {isModal && (
-          <Modal
-            children={
-              <NoteForm
-                onSubmit={handleSubmit}
-                onClose={handleClose}
-              ></NoteForm>
-            }
-          ></Modal>
+          <Modal children={<NoteForm onClose={handleClose}></NoteForm>}></Modal>
         )}
       </div>
     </>

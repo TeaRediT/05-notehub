@@ -3,11 +3,8 @@ export interface Note {
   title: string;
   content: string;
   tag: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export interface NoteList {
-  notes: Note[];
-  totalPages: number;
-}
-
-export type CreateNote = Omit<Note, "id">;
+export type CreateNote = Omit<Note, "id" | "updatedAt">;

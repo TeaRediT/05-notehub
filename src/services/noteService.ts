@@ -1,5 +1,6 @@
 import axios from "axios";
-import type { CreateNote, Note, NoteList } from "../types/note";
+import type { CreateNote, Note } from "../types/note";
+import type { NoteList } from "../components/Pagination/Pagination";
 
 const options = {
   headers: {
@@ -12,7 +13,7 @@ export const fetchNotes = async (
   page: number,
 ): Promise<NoteList> => {
   const { data } = await axios.get<NoteList>(
-    `https://notehub-public.goit.study/api/notes?search=${query}&page=${page}&perPage=12&sortBy=created`,
+    `https://notehub-public.goit.study/api/notes?${query === "" ? "" : `search=${query}&`}page=${page}&perPage=12&sortBy=created`,
     options,
   );
   console.log(data);
@@ -20,17 +21,21 @@ export const fetchNotes = async (
   return data;
 };
 
-export const postNote = async (note: CreateNote): Promise<void> => {
+export const postNote = async (note: CreateNote): Promise<CreateNote> => {
   await axios.post<Note>(
     `https://notehub-public.goit.study/api/notes`,
     note,
     options,
   );
+
+  return note;
 };
 
-export const deleteNote = async (id: string): Promise<void> => {
+export const deleteNote = async (note: Note): Promise<Note> => {
   await axios.delete<Note>(
-    `https://notehub-public.goit.study/api/notes/${id}`,
+    `https://notehub-public.goit.study/api/notes/${note.id}`,
     options,
   );
+
+  return note;
 };

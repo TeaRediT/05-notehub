@@ -1,7 +1,12 @@
 import ReactPaginate from "react-paginate";
 import css from "./Pagination.module.css";
-import type { NoteList } from "../../types/note";
+import type { Note } from "../../types/note";
 import type { Dispatch, SetStateAction } from "react";
+
+export interface NoteList {
+  notes: Note[];
+  totalPages: number;
+}
 
 interface PagintaionProps {
   data: NoteList;
