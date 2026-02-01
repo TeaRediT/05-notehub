@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { NoteList } from "../types/note";
+import type { CreateNote, Note, NoteList } from "../types/note";
 
 const options = {
   headers: {
@@ -18,4 +18,19 @@ export const fetchNotes = async (
   console.log(data);
 
   return data;
+};
+
+export const postNote = async (note: CreateNote): Promise<void> => {
+  await axios.post<Note>(
+    `https://notehub-public.goit.study/api/notes`,
+    note,
+    options,
+  );
+};
+
+export const deleteNote = async (id: string): Promise<void> => {
+  await axios.delete<Note>(
+    `https://notehub-public.goit.study/api/notes/${id}`,
+    options,
+  );
 };

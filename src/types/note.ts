@@ -9,3 +9,5 @@ export interface NoteList {
   notes: Note[];
   totalPages: number;
 }
+
+export type CreateNote = Omit<Note, "id">;
