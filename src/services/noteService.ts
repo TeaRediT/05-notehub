@@ -1,6 +1,8 @@
 import axios from "axios";
-import type { CreateNote, Note } from "../types/note";
+import type { Note } from "../types/note";
 import type { NoteList } from "../components/Pagination/Pagination";
+
+type CreateNote = Omit<Note, "id" | "updatedAt">;
 
 const options = {
   headers: {
@@ -22,20 +24,20 @@ export const fetchNotes = async (
 };
 
 export const postNote = async (note: CreateNote): Promise<CreateNote> => {
-  await axios.post<Note>(
+  const { data } = await axios.post<Note>(
     `https://notehub-public.goit.study/api/notes`,
     note,
     options,
   );
 
-  return note;
+  return data;
 };
 
-export const deleteNote = async (note: Note): Promise<Note> => {
-  await axios.delete<Note>(
-    `https://notehub-public.goit.study/api/notes/${note.id}`,
+export const deleteNote = async (id: string): Promise<Note> => {
+  const { data } = await axios.delete<Note>(
+    `https://notehub-public.goit.study/api/notes/${id}`,
     options,
   );
 
-  return note;
+  return data;
 };

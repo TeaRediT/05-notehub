@@ -8,13 +8,13 @@ export interface NoteList {
   totalPages: number;
 }
 
-interface PagintaionProps {
+interface PaginationProps {
   data: NoteList;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
 }
 
-const Pagination = ({ data, page, setPage }: PagintaionProps) => {
+const Pagination = ({ data, page, setPage }: PaginationProps) => {
   return (
     <ReactPaginate
       pageCount={data.totalPages}

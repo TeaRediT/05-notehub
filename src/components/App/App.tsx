@@ -34,6 +34,7 @@ function App() {
   const updateQuery = useDebouncedCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       setQuery(e.target.value);
+      setPage(1);
     },
     300,
   );
@@ -58,7 +59,10 @@ function App() {
           <NoteList notes={data.notes}></NoteList>
         )}
         {isModal && (
-          <Modal children={<NoteForm onClose={handleClose}></NoteForm>}></Modal>
+          <Modal
+            onClose={handleClose}
+            children={<NoteForm onClose={handleClose}></NoteForm>}
+          ></Modal>
         )}
       </div>
     </>
