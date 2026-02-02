@@ -38,7 +38,6 @@ const NoteForm = ({ onClose }: NoteFormProps) => {
   const fieldId = useId();
 
   const handleSubmit = (values: NoteFormValues): void => {
-    onClose();
     addMutation.mutate(values);
   };
 
@@ -46,6 +45,7 @@ const NoteForm = ({ onClose }: NoteFormProps) => {
     mutationFn: postNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
+      onClose();
     },
     onError: () => {
       toast("Something went wrong");

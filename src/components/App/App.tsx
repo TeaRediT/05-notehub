@@ -45,7 +45,11 @@ function App() {
         <header className={css.toolbar}>
           <SearchBox query={query} updateQuery={updateQuery}></SearchBox>
           {data && data.totalPages > 1 && (
-            <Pagination data={data} page={page} setPage={setPage}></Pagination>
+            <Pagination
+              totalPages={data.totalPages}
+              page={page}
+              setPage={setPage}
+            ></Pagination>
           )}
           {
             <button className={css.button} onClick={handleClick}>

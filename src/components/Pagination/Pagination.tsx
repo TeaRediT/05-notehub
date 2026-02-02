@@ -1,23 +1,17 @@
 import ReactPaginate from "react-paginate";
 import css from "./Pagination.module.css";
-import type { Note } from "../../types/note";
 import type { Dispatch, SetStateAction } from "react";
 
-export interface NoteList {
-  notes: Note[];
-  totalPages: number;
-}
-
 interface PaginationProps {
-  data: NoteList;
+  totalPages: number;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
 }
 
-const Pagination = ({ data, page, setPage }: PaginationProps) => {
+const Pagination = ({ totalPages, page, setPage }: PaginationProps) => {
   return (
     <ReactPaginate
-      pageCount={data.totalPages}
+      pageCount={totalPages}
       pageRangeDisplayed={5}
       marginPagesDisplayed={1}
       onPageChange={({ selected }) => setPage(selected + 1)}

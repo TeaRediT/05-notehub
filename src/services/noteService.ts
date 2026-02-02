@@ -1,8 +1,12 @@
 import axios from "axios";
 import type { Note } from "../types/note";
-import type { NoteList } from "../components/Pagination/Pagination";
 
-type CreateNote = Omit<Note, "id" | "updatedAt">;
+type CreateNote = Omit<Note, "id">;
+
+export interface NoteList {
+  notes: Note[];
+  totalPages: number;
+}
 
 const options = {
   headers: {
@@ -23,7 +27,7 @@ export const fetchNotes = async (
   return data;
 };
 
-export const postNote = async (note: CreateNote): Promise<CreateNote> => {
+export const postNote = async (note: CreateNote): Promise<Note> => {
   const { data } = await axios.post<Note>(
     `https://notehub-public.goit.study/api/notes`,
     note,
